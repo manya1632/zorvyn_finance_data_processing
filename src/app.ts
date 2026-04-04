@@ -10,6 +10,7 @@ import { setupSwagger } from './config/swagger';
 import usersRouter from './modules/users/users.routes';
 import authRouter from './modules/auth/auth.routes';
 import recordsRouter from './modules/records/records.routes';
+import dashboardRouter from './modules/dashboard/dashboard.routes';
 
 
 export function createApp(): Application {
@@ -40,6 +41,7 @@ export function createApp(): Application {
   app.use('/api/v1/auth', authRouter); //auth routes
   app.use('/api/v1/users', usersRouter); // user routes
   app.use('/api/v1/records', recordsRouter); // record routes
+  app.use('/api/v1/dashboard', dashboardRouter); // dashboard routes
 
   setupSwagger(app);
   app.use(errorHandler);
