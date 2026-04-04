@@ -20,7 +20,8 @@
       "@middleware/*": ["src/middleware/*"],
       "@modules/*": ["src/modules/*"],
       "@utils/*": ["src/utils/*"],
-      "@types/*": ["src/types/*"]
+      "@types/*": ["src/types/*"],
+      "typeRoots": ["./node_modules/@types", "./src/types"],
     }
   },
   "include": ["src/**/*"],

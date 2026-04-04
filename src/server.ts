@@ -2,6 +2,7 @@ import { createApp } from './app';
 import { config } from './config';
 import logger from './config/logger';
 import prisma from './config/database';
+import './types/express';
 
 const app = createApp();
 

@@ -9,6 +9,7 @@ import { sendSuccess } from './utils/response';
 import { setupSwagger } from './config/swagger';
 import usersRouter from './modules/users/users.routes';
 import authRouter from './modules/auth/auth.routes';
+import recordsRouter from './modules/records/records.routes';
 
 
 export function createApp(): Application {
@@ -38,6 +39,7 @@ export function createApp(): Application {
 
   app.use('/api/v1/auth', authRouter); //auth routes
   app.use('/api/v1/users', usersRouter); // user routes
+  app.use('/api/v1/records', recordsRouter); // record routes
 
   setupSwagger(app);
   app.use(errorHandler);
