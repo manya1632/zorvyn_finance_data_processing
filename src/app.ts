@@ -2,11 +2,12 @@ import express, { Application, Request, Response } from 'express';
 import helmet from 'helmet';
 import cors from 'cors';
 import { config } from './config';
-// import { requestLogger } from './middleware/requestLogger';
+import { requestLogger } from './middleware/requestLogger';
 import { globalRateLimiter } from './middleware/rateLimiter';
 import { errorHandler } from './middleware/errorHandler';
 import { sendSuccess } from './utils/response';
 import { setupSwagger } from './config/swagger';
+import usersRouter from './modules/users/users.routes';
 import authRouter from './modules/auth/auth.routes';
 
 
@@ -23,7 +24,7 @@ export function createApp(): Application {
   app.use(express.json({ limit: '10kb' }));
   app.use(express.urlencoded({ extended: true, limit: '10kb' }));
 
-  // app.use(requestLogger);
+  app.use(requestLogger);
   app.use('/api/', globalRateLimiter);
 
 
@@ -35,7 +36,8 @@ export function createApp(): Application {
     });
   });
 
-  app.use('/api/v1/auth', authRouter);
+  app.use('/api/v1/auth', authRouter); //auth routes
+  app.use('/api/v1/users', usersRouter); // user routes
 
   setupSwagger(app);
   app.use(errorHandler);

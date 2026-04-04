@@ -11,7 +11,7 @@ interface JwtPayload {
   exp: number;
 }
 
-export async function authenticate(req: Request, res: Response, next: NextFunction): Promise<void> {
+export async function authenticate(req: Request, _res: Response, next: NextFunction): Promise<void> {
   try {
     const authHeader = req.headers.authorization;
     if (!authHeader?.startsWith('Bearer ')) {
@@ -39,7 +39,7 @@ export async function authenticate(req: Request, res: Response, next: NextFuncti
       throw new AppError(403, 'FORBIDDEN', 'Your account has been deactivated');
     }
 
-    req.user = { id: user.id, role: user.role, status: user.status };
+    (req as any).user = { id: user.id, role: user.role, status: user.status };
     next();
   } catch (err) {
     next(err);

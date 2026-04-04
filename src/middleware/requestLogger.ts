@@ -1,5 +1,4 @@
 import morgan from 'morgan';
-import { Request, Response } from 'express';
 import logger from '../config/logger';
 
 const stream = {
@@ -9,13 +8,14 @@ const stream = {
 };
 
 export const requestLogger = morgan(
-  (tokens, req: Request, res: Response) => {
+  (tokens, req, res) => {
+    const userId = (req as any).user?.id ?? null;
     return JSON.stringify({
       method: tokens.method(req, res),
       url: tokens.url(req, res),
       status: tokens.status(req, res),
       responseTime: `${tokens['response-time'](req, res)}ms`,
-      userId: req.user?.id ?? null,
+      userId,
     });
   },
   { stream }
