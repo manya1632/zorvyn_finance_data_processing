@@ -305,8 +305,8 @@ npm run test:integration
 
 ## 🐳 Docker
 
-```bash
-npm run test:integration
+```
+docker-compose up --build
 ```
 
 ---
