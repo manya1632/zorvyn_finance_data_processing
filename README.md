@@ -303,6 +303,13 @@ npm run test:integration
 
 ---
 
+## 🐳 Docker
+
+```bash
+npm run test:integration
+```
+
+---
 
 ## 📌 Notes
 
