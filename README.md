@@ -479,8 +479,44 @@ npm run test:coverage
 * Dockerized deployment with PostgreSQL and production-ready configuration
 * Rate Limiting avoids attacks
 * Proper error responses and status code modularity
+* CI/CD using Github Actions and Render
 
 --- 
+
+## CI/CD Pipeline
+
+This project implements a Continuous Integration (CI) pipeline using GitHub Actions to ensure code quality, reliability, and stability across all changes.
+
+### Continuous Integration (CI)
+
+A GitHub Actions workflow is configured to automatically run on every push and pull request to the `main` branch.
+
+#### Workflow Features
+
+- Automated environment setup using Node.js 20
+- PostgreSQL service container for integration testing
+- Prisma client generation and schema synchronization
+- Execution of unit, integration, and property-based tests
+- Database readiness checks to avoid race conditions
+- Isolated test environment using `.env.test`
+
+#### CI Workflow Steps
+
+1. Checkout repository
+2. Install dependencies
+3. Generate Prisma client
+4. Wait for PostgreSQL service to be ready
+5. Apply database migrations
+6. Synchronize schema (`prisma db push`)
+7. Run full test suite
+
+#### Workflow File Location
+
+```bash
+.github/workflows/ci.yml
+```
+
+---
 
 ## Notes
 
@@ -490,6 +526,7 @@ npm run test:coverage
 * Docker setup includes both API and database services
 
 ---
+
 
 ## Author
 
