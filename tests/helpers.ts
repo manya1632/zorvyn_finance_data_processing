@@ -23,7 +23,6 @@ export async function registerAndLogin(overrides: {
     role: overrides.role ?? 'ADMIN',
   };
   const res = await request(app).post('/api/v1/auth/register').send(payload);
-  await new Promise(resolve => setTimeout(resolve, 100));
   return { token: res.body.data.token, userId: res.body.data.user.id };
 }
 

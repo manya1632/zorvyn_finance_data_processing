@@ -1,63 +1,80 @@
-name: CI Pipeline
+name: CI
 
 on:
   push:
-    branches: [main]
+    branches: [main, master, develop]
   pull_request:
-    branches: [main]
+    branches: [main, master, develop]
 
 jobs:
   test:
+    name: Lint, Type-check & Test
     runs-on: ubuntu-latest
 
     services:
       postgres:
-        image: postgres:16
+        image: postgres:16-alpine
         env:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
-          POSTGRES_DB: test_db
+          POSTGRES_DB: finance_test_db
         ports:
           - 5432:5432
         options: >-
-          --health-cmd="pg_isready -U postgres"
-          --health-interval=10s
-          --health-timeout=5s
-          --health-retries=5
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
 
     env:
-      DATABASE_URL: postgresql://postgres:postgres@localhost:5432/test_db
-      JWT_SECRET: test_secret_at_least_32_chars
+      DATABASE_URL: postgresql://postgres:postgres@localhost:5432/finance_test_db
+      JWT_SECRET: ci_test_secret_at_least_32_chars_long_here
       NODE_ENV: test
+      LOG_LEVEL: error
+      CACHE_TTL_SECONDS: 1
+      PORT: 3001
+      RATE_LIMIT_WINDOW_MS: 900000
+      RATE_LIMIT_MAX: 1000
+      AUTH_RATE_LIMIT_MAX: 1000
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Setup Node.js
+      - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 20
+          cache: npm
 
       - name: Install dependencies
-        run: npm install
+        run: npm ci
 
-      - name: Generate Prisma Client
+      - name: Generate Prisma client
         run: npx prisma generate
 
-      - name: Wait for database to be ready
-        run: |
-          for i in {1..10}; do
-            nc -z localhost 5432 && echo "Database is ready!" && break
-            echo "Waiting for database..."
-            sleep 2
-          done
+      - name: Type-check
+        run: npx tsc --noEmit
 
-      - name: Run Prisma migrations
+      - name: Run database migrations
         run: npx prisma migrate deploy
 
-      - name: Ensure schema (fallback safety)
-        run: npx prisma db push
+      - name: Run unit tests
+        run: npm run test:unit
 
-      - name: Run all tests
-        run: npm test
+      - name: Run property-based tests
+        run: npm run test:property
+
+      - name: Run integration tests
+        run: npm run test:integration
+
+      - name: Run coverage report
+        run: npm run test:coverage
+
+      - name: Upload coverage report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: coverage-report
+          path: coverage/
+          retention-days: 7

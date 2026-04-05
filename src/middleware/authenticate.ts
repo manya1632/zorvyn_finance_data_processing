@@ -29,7 +29,7 @@ export async function authenticate(req: Request, _res: Response, next: NextFunct
     console.log("JWT decoded:", decoded);
     console.log("Looking for user:", decoded.sub);
 
-    const user = await prisma.user.findUnique({
+    const user = await prisma.user.findFirst({
       where: { id: decoded.sub, deletedAt: null },
       select: { id: true, role: true, status: true },
     });

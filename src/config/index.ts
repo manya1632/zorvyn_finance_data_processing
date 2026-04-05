@@ -1,8 +1,6 @@
 import dotenv from 'dotenv';
 
-dotenv.config({
-  path: process.env.NODE_ENV === 'test' ? '.env.test' : '.env',
-});
+dotenv.config();
 
 const requiredVars = ['DATABASE_URL', 'JWT_SECRET'] as const;
 
