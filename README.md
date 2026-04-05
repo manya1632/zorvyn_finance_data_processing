@@ -459,16 +459,26 @@ npm run test:coverage
 
 * Soft delete is used to preserve historical data
 * JWT is used for stateless authentication
-* ZOD validations follow basic input validation
 * Role-based access is enforced using middleware
 * Prisma ORM ensures type safety and database abstraction
 * Dashboard endpoints use aggregation queries for efficiency
 * Audit logs are recorded asynchronously
-* Pagination + Filtering helps to optimise UX
-* Rate Limiting avoids attacks
-* Proper error responses and status code modularity
 
 ---
+
+## Key Features
+
+* Financial Records Management with filtering, sorting, pagination, and soft deletion
+* Role-Based Access Control (RBAC) across all endpoints
+* Audit Logging System to track CREATE, UPDATE, and DELETE operations with field-level diffs
+* Dashboard Analytics APIs providing aggregated insights such as income vs expenses, category breakdowns, and monthly trends
+* Input validation using Zod schemas for type-safe and reliable request handling
+* Caching layer to optimize frequently accessed dashboard queries
+* Comprehensive testing strategy, including unit, integration, and property-based tests
+* Swagger/OpenAPI documentation for easy API exploration and testing
+* Dockerized deployment with PostgreSQL and production-ready configuration
+* Rate Limiting avoids attacks
+* Proper error responses and status code modularity
 
 ## Notes
 
