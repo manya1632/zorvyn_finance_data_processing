@@ -480,6 +480,8 @@ npm run test:coverage
 * Rate Limiting avoids attacks
 * Proper error responses and status code modularity
 
+--- 
+
 ## Notes
 
 * Swagger documentation is available only in development mode
