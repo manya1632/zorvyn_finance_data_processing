@@ -178,6 +178,7 @@ Update values accordingly.
 ### 4. Setup Database
 
 ```bash
+npx prisma generate
 npx prisma migrate dev
 ```
 
@@ -316,29 +317,141 @@ Authorization: Bearer <token>
 
 ## Testing
 
-### Run all tests
+This project includes **unit tests, property-based tests, and integration tests** to ensure correctness, reliability, and real-world behavior.
+
+---
+
+## 1. Run All Tests
 
 ```bash
 npm test
 ```
 
-### Unit tests
+Runs all test suites (unit + integration + property-based if configured).
+
+---
+
+## 2. Unit Tests
+
+Unit tests validate individual functions and services in isolation using mocks.
+
+### Run unit tests
 
 ```bash
 npm run test:unit
 ```
 
-### Property-based tests
+### Notes
+
+* Does NOT require database
+* Fast execution
+* Uses mocks for Prisma, bcrypt, etc.
+
+---
+
+## 3. Integration Tests
+
+Integration tests validate **end-to-end API flows**, including:
+
+* Routing
+* Middleware (authentication, authorization)
+* Controllers
+* Database interactions (Prisma + PostgreSQL)
+
+---
+
+### Step 1: Edit `.env.test`
+
+```env
+DATABASE_URL=postgresql://postgres:postgres@localhost:5432/test_db
+JWT_SECRET=test_secret_at_least_32_chars
+NODE_ENV=test
+```
+
+---
+
+### Step 2: Start Test Database (Docker Recommended)
+
+```bash
+docker run -d \
+  --name test-db \
+  -p 5432:5432 \
+  -e POSTGRES_USER=postgres \
+  -e POSTGRES_PASSWORD=postgres \
+  -e POSTGRES_DB=test_db \
+  postgres:16
+```
+
+---
+
+### Step 3: Run Prisma Setup
+
+```bash
+npx prisma generate
+npx prisma migrate deploy
+```
+
+What this does:
+
+* `generate` → builds Prisma client
+* `migrate deploy` → creates tables in test database
+
+---
+
+### Step 4: Run Integration Tests
+
+```bash
+npm run test:integration
+```
+
+---
+
+### Step 5: Stop Test Database (optional)
+
+```bash
+docker stop test-db && docker rm test-db
+```
+
+---
+
+## 4. Property-Based Tests
+
+Property-based tests validate behavior across a wide range of randomized inputs.
 
 ```bash
 npm run test:property
 ```
 
-### Coverage
+---
+
+## 5. Coverage
+
+Generate test coverage report:
 
 ```bash
 npm run test:coverage
 ```
+
+---
+
+## Summary
+
+| Test Type         | Command                  | Requires DB | Purpose                   |
+| ----------------- | ------------------------ | ----------- | ------------------------- |
+| Unit Tests        | npm run test:unit        | No          | Test individual functions |
+| Integration Tests | npm run test:integration | Yes         | Test full API + DB flow   |
+| Property Tests    | npm run test:property    | No          | Validate edge cases       |
+| All Tests         | npm test                 | Depends     | Run complete suite        |
+| Coverage          | npm run test:coverage    | Depends     | Measure test coverage     |
+
+---
+
+## Notes
+
+* Integration tests use a **separate test database** (`test_db`)
+* Database is cleaned before/after tests using helper utilities
+* Ensure PostgreSQL is running before executing integration tests
+* Use Docker for consistent and isolated test environments
 
 ---
 
