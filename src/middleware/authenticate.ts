@@ -26,10 +26,15 @@ export async function authenticate(req: Request, _res: Response, next: NextFunct
       throw new AppError(401, 'UNAUTHORIZED', 'Invalid or expired authentication token');
     }
 
-    const user = await prisma.user.findFirst({
+    console.log("JWT decoded:", decoded);
+    console.log("Looking for user:", decoded.sub);
+
+    const user = await prisma.user.findUnique({
       where: { id: decoded.sub, deletedAt: null },
       select: { id: true, role: true, status: true },
     });
+
+    console.log("User found:", user);
 
     if (!user) {
       throw new AppError(401, 'UNAUTHORIZED', 'User not found');
