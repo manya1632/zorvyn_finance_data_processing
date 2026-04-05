@@ -21,6 +21,8 @@ https://zorvyn-finance-data-processing-api.onrender.com/api/v1/docs
 Health Check:
 https://zorvyn-finance-data-processing-api.onrender.com/api/v1/health
 
+---
+
 ## Objectives
 
 The backend is designed to:
@@ -349,8 +351,9 @@ npm run test:coverage
 * Prisma ORM ensures type safety and database abstraction
 * Dashboard endpoints use aggregation queries for efficiency
 * Audit logs are recorded asynchronously
-* Pagination + Filtering help optimise UX
+* Pagination + Filtering helps to optimise UX
 * Rate Limiting avoids attacks
+* Proper error responses and status code modularity
 
 ---
 
