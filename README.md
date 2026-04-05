@@ -1,11 +1,11 @@
-# 💰 Finance Data Processing & Access Control Backend
+# Finance Data Processing & Access Control Backend
 
 A **production-ready REST API** for managing financial records with **Role-Based Access Control (RBAC)**.
 Built using **Node.js, Express, TypeScript, Prisma, PostgreSQL** with industry-standard practices.
 
 ---
 
-## 🚀 Tech Stack
+## Tech Stack
 
 | Layer      | Technology                    |
 | ---------- | ----------------------------- |
@@ -21,7 +21,7 @@ Built using **Node.js, Express, TypeScript, Prisma, PostgreSQL** with industry-s
 
 ---
 
-## 🏗️ Architecture
+## Architecture
 
 ```
 Request → Routes → Controllers → Services → Prisma (DB)
@@ -35,7 +35,7 @@ Request → Routes → Controllers → Services → Prisma (DB)
 
 ---
 
-## 🔐 Role-Based Access Control
+## Role-Based Access Control
 
 | Feature       | VIEWER | ANALYST | ADMIN |
 | ------------- | ------ | ------- | ----- |
@@ -47,7 +47,7 @@ Request → Routes → Controllers → Services → Prisma (DB)
 
 ---
 
-## ⚙️ Local Setup
+## Local Setup
 
 ### 1️⃣ Clone Repository
 
@@ -106,7 +106,7 @@ http://localhost:3000
 
 ---
 
-## 📘 API Base URL
+## API Base URL
 
 ```
 http://localhost:3000/api/v1
@@ -114,7 +114,7 @@ http://localhost:3000/api/v1
 
 ---
 
-## 📄 Swagger Documentation
+## Swagger Documentation
 
 ```
 http://localhost:3000/api/v1/docs
@@ -128,7 +128,7 @@ http://localhost:3000/api/v1/docs
 
 ---
 
-## 🔑 How to Use APIs
+## How to Use APIs
 
 ### 1. Register
 
@@ -179,7 +179,7 @@ GET /api/v1/dashboard/summary
 
 ---
 
-## 🧪 Running Tests
+## Running Tests
 
 ```bash
 npm test
@@ -190,7 +190,7 @@ npm run test:coverage
 
 ---
 
-## ⚠️ Integration Test Setup
+## Integration Test Setup
 
 Create `.env.test`:
 
@@ -204,11 +204,11 @@ npm run test:integration
 
 ---
 
-# 📦 Complete API Endpoints
+# Complete API Endpoints
 
 ---
 
-## 🔐 Auth
+## Auth
 
 | Method | Endpoint         | Description           |
 | ------ | ---------------- | --------------------- |
@@ -217,7 +217,7 @@ npm run test:integration
 
 ---
 
-## 👥 Users (ADMIN only)
+## Users (ADMIN only)
 
 | Method | Endpoint             | Description        |
 | ------ | -------------------- | ------------------ |
@@ -230,7 +230,7 @@ npm run test:integration
 
 ---
 
-## 💸 Records
+## Records
 
 | Method | Endpoint        | Roles          | Description   |
 | ------ | --------------- | -------------- | ------------- |
@@ -242,7 +242,7 @@ npm run test:integration
 
 ---
 
-## 📊 Dashboard
+## Dashboard
 
 | Method | Endpoint                        | Roles | Description       |
 | ------ | ------------------------------- | ----- | ----------------- |
@@ -253,7 +253,7 @@ npm run test:integration
 
 ---
 
-## 📜 Audit Logs (ADMIN only)
+## Audit Logs (ADMIN only)
 
 | Method | Endpoint      | Description                  |
 | ------ | ------------- | ---------------------------- |
@@ -261,7 +261,7 @@ npm run test:integration
 
 ---
 
-## 📄 Schemas
+## Schemas
 
 ### Success Response
 
@@ -291,19 +291,19 @@ npm run test:integration
 
 ## 📌 Features
 
-* ✅ JWT Authentication
-* ✅ RBAC Authorization
-* ✅ Zod Validation
-* ✅ Swagger Docs
-* ✅ Rate Limiting
-* ✅ Soft Delete
-* ✅ Audit Logging
-* ✅ Dashboard Analytics
-* ✅ Pagination + Filtering
+* 1. JWT Authentication
+* 2. RBAC Authorization
+* 3. Zod Validation
+* 4. Swagger Docs
+* 5. Rate Limiting
+* 6. Soft Delete
+* 7. Audit Logging
+* 8. Dashboard Analytics
+* 9. Pagination + Filtering
 
 ---
 
-## 🐳 Docker
+## Docker
 
 ```
 docker-compose up --build
@@ -311,7 +311,7 @@ docker-compose up --build
 
 ---
 
-## 📌 Notes
+## Notes
 
 * Swagger only in development
 * PostgreSQL required
@@ -319,6 +319,6 @@ docker-compose up --build
 
 ---
 
-## 👩‍💻 Author
+## Author
 
 Manya Gupta
