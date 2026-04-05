@@ -64,7 +64,7 @@ const options: swaggerJsdoc.Options = {
 const swaggerSpec = swaggerJsdoc(options);
 
 export function setupSwagger(app: Application): void {
-  if (config.nodeEnv === 'production') return;
+  if (config.nodeEnv === 'production' && !process.env.ENABLE_SWAGGER) return;
   app.use('/api/v1/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec, { explorer: true }));
   app.get('/api/v1/docs.json', (_req, res) => {
     res.setHeader('Content-Type', 'application/json');
