@@ -1,107 +1,199 @@
-# Finance Data Processing & Access Control Backend
+# Finance Data Processing and Access Control Backend
 
-A **production-ready REST API** for managing financial records with **Role-Based Access Control (RBAC)**.
-Built using **Node.js, Express, TypeScript, Prisma, PostgreSQL** with industry-standard practices.
+## Overview
+
+This project is a backend system designed for managing financial data and enforcing role-based access control in a structured and scalable manner.
+
+The system simulates a finance dashboard backend where different types of users interact with financial records based on their roles. It provides endpoints for managing users, financial records, audit logs, and aggregated dashboard insights.
+
+The implementation focuses on clarity, maintainability, correctness, and logical separation of concerns.
+
+---
+
+## Objectives
+
+The backend is designed to:
+
+* Manage users and enforce role-based permissions
+* Handle financial records with full CRUD operations
+* Provide aggregated data for dashboard analytics
+* Ensure proper validation, error handling, and structured responses
+* Demonstrate clean backend architecture and maintainable code structure
 
 ---
 
 ## Tech Stack
 
-| Layer      | Technology                    |
-| ---------- | ----------------------------- |
-| Runtime    | Node.js 20                    |
-| Framework  | Express                       |
-| Language   | TypeScript                    |
-| Database   | PostgreSQL                    |
-| ORM        | Prisma                        |
-| Auth       | JWT + bcrypt                  |
-| Validation | Zod                           |
-| Logging    | Winston + Morgan              |
-| Testing    | Jest + Supertest + fast-check |
+| Layer          | Technology                  |
+| -------------- | --------------------------- |
+| Runtime        | Node.js 20                  |
+| Framework      | Express                     |
+| Language       | TypeScript                  |
+| Database       | PostgreSQL                  |
+| ORM            | Prisma                      |
+| Authentication | JSON Web Tokens (JWT)       |
+| Validation     | Zod                         |
+| Logging        | Winston + Morgan            |
+| Testing        | Jest, Supertest, fast-check |
 
 ---
 
 ## Architecture
 
+The application follows a layered architecture with clear separation of responsibilities:
+
 ```
-Request → Routes → Controllers → Services → Prisma (DB)
+Request → Routes → Controllers → Services → Prisma (Database)
                 ↓
-          Middleware:
-          helmet → cors → logger → rateLimiter
+          Middleware Layer:
+          helmet → cors → requestLogger → rateLimiter
           → authenticate → authorize
                 ↓
-          Centralized Error Handler
+          Centralized Error Handling
 ```
+
+### Key Design Principles
+
+* Modular and scalable folder structure
+* Separation of concerns between layers
+* Middleware-driven request processing
+* Centralized error handling
+* Consistent response format across all endpoints
 
 ---
 
 ## Role-Based Access Control
 
-| Feature       | VIEWER | ANALYST | ADMIN |
-| ------------- | ------ | ------- | ----- |
-| Dashboard     | ✅      | ✅       | ✅     |
-| Records Read  | ❌      | ✅       | ✅     |
-| Records Write | ❌      | ❌       | ✅     |
-| Users         | ❌      | ❌       | ✅     |
-| Audit Logs    | ❌      | ❌       | ✅     |
+The system enforces strict access control based on user roles:
+
+| Feature                      | Viewer | Analyst | Admin |
+| ---------------------------- | ------ | ------- | ----- |
+| Dashboard Access             | Yes    | Yes     | Yes   |
+| View Records                 | No     | Yes     | Yes   |
+| Create/Update/Delete Records | No     | No      | Yes   |
+| User Management              | No     | No      | Yes   |
+| Audit Logs                   | No     | No      | Yes   |
 
 ---
 
-## Local Setup
+## Core Features
 
-### 1️⃣ Clone Repository
+### 1. User and Role Management
 
-```bash
-git clone <your-repo-url>
-cd <project-folder>
+* Create and manage users
+* Assign roles (Viewer, Analyst, Admin)
+* Update user details and status (active/inactive)
+* Enforce role-based access restrictions
+
+### 2. Financial Records Management
+
+* Create, update, delete, and view records
+* Fields include amount, type, category, date, and notes
+* Filtering, searching, and pagination support
+* Soft delete implementation
+
+### 3. Dashboard Analytics
+
+* Total income and expenses
+* Net balance calculation
+* Category-wise breakdown
+* Monthly trends
+* Recent activity
+
+### 4. Access Control
+
+* Middleware-based authentication and authorization
+* JWT-based user verification
+* Role enforcement at route level
+
+### 5. Validation and Error Handling
+
+* Schema validation using Zod
+* Structured error responses
+* Appropriate HTTP status codes
+* Protection against invalid input
+
+### 6. Audit Logging
+
+* Tracks user actions on resources
+* Supports filtering and pagination
+* Stored persistently in database
+
+---
+
+## Environment Variables
+
+Create a `.env` file using `.env.example`:
+
+```
+DATABASE_URL=postgresql://postgres:password@localhost:5432/finance_db
+JWT_SECRET=your_secret_key_at_least_32_characters
+JWT_EXPIRES_IN=24h
+PORT=3000
+NODE_ENV=development
+LOG_LEVEL=info
+CACHE_TTL_SECONDS=60
+RATE_LIMIT_WINDOW_MS=900000
+RATE_LIMIT_MAX=100
+AUTH_RATE_LIMIT_MAX=10
 ```
 
 ---
 
-### 2️⃣ Install Dependencies
+## Local Development Setup
+
+### 1. Clone Repository
+
+```bash
+git clone https://github.com/manya1632/zorvyn_finance_data_processing.git
+```
+
+### 2. Install Dependencies
 
 ```bash
 npm install
 ```
 
----
-
-### 3️⃣ Setup Environment Variables
+### 3. Configure Environment
 
 ```bash
 cp .env.example .env
 ```
 
-Edit `.env`:
+Update values accordingly.
 
-```env
-DATABASE_URL=postgresql://postgres:password@localhost:5432/finance_db
-JWT_SECRET=your_super_secret_key_min_32_chars
-JWT_EXPIRES_IN=24h
-PORT=3000
-NODE_ENV=development
-```
-
----
-
-### 4️⃣ Setup Database
+### 4. Setup Database
 
 ```bash
 npx prisma migrate dev
 ```
 
----
-
-### 5️⃣ Run Backend
+### 5. Run Server
 
 ```bash
 npm run dev
 ```
 
-Server runs at:
+Server will run at:
 
 ```
 http://localhost:3000
+```
+
+---
+
+## Docker Setup
+
+### Run using Docker
+
+```bash
+docker compose up --build
+```
+
+### Stop containers
+
+```bash
+docker compose down
 ```
 
 ---
@@ -114,208 +206,149 @@ http://localhost:3000/api/v1
 
 ---
 
-## Swagger Documentation
+## API Documentation (Swagger)
 
 ```
 http://localhost:3000/api/v1/docs
 ```
 
-👉 Open this in browser to:
+Swagger UI allows:
 
-* Explore all APIs
-* Test endpoints
-* Add JWT token
+* Viewing all endpoints
+* Testing APIs directly
+* Adding JWT authentication
 
 ---
 
-## How to Use APIs
+## API Usage Flow
 
-### 1. Register
+### Step 1: Register
 
 ```
 POST /api/v1/auth/register
 ```
 
-```json
-{
-  "name": "Manya",
-  "email": "manya@gmail.com",
-  "password": "password123",
-  "role": "ADMIN"
-}
-```
-
----
-
-### 2. Login
+### Step 2: Login
 
 ```
 POST /api/v1/auth/login
 ```
 
-➡️ Copy JWT token
+Copy the JWT token from response.
 
----
+### Step 3: Authorize
 
-### 3. Authorize
-
-In Swagger → Click **Authorize**
+Use in Swagger or Postman:
 
 ```
-Bearer YOUR_TOKEN
+Authorization: Bearer <token>
 ```
 
 ---
 
-### 4. Use APIs
+## API Endpoints
 
-Example:
+### Authentication
 
-```
-GET /api/v1/users
-GET /api/v1/records
-GET /api/v1/dashboard/summary
-```
+| Method | Endpoint       | Description           |
+| ------ | -------------- | --------------------- |
+| POST   | /auth/register | Register a new user   |
+| POST   | /auth/login    | Login and receive JWT |
 
 ---
 
-## Running Tests
+### Users (Admin Only)
+
+| Method | Endpoint           |
+| ------ | ------------------ |
+| POST   | /users             |
+| GET    | /users             |
+| GET    | /users/{id}        |
+| PUT    | /users/{id}        |
+| DELETE | /users/{id}        |
+| PATCH  | /users/{id}/status |
+
+---
+
+### Records
+
+| Method | Endpoint      | Access         |
+| ------ | ------------- | -------------- |
+| POST   | /records      | Admin          |
+| GET    | /records      | Analyst, Admin |
+| GET    | /records/{id} | Analyst, Admin |
+| PUT    | /records/{id} | Admin          |
+| DELETE | /records/{id} | Admin          |
+
+---
+
+### Dashboard
+
+| Method | Endpoint                      |
+| ------ | ----------------------------- |
+| GET    | /dashboard/summary            |
+| GET    | /dashboard/category-breakdown |
+| GET    | /dashboard/monthly-trends     |
+| GET    | /dashboard/recent-activity    |
+
+---
+
+### Audit Logs (Admin Only)
+
+| Method | Endpoint    |
+| ------ | ----------- |
+| GET    | /audit-logs |
+
+---
+
+## Testing
+
+### Run all tests
 
 ```bash
 npm test
+```
+
+### Unit tests
+
+```bash
 npm run test:unit
+```
+
+### Property-based tests
+
+```bash
 npm run test:property
+```
+
+### Coverage
+
+```bash
 npm run test:coverage
 ```
 
 ---
 
-## Integration Test Setup
+## Design Decisions and Assumptions
 
-Create `.env.test`:
-
-```env
-DATABASE_URL=postgresql://postgres:password@localhost:5432/test_db
-```
-
-```bash
-npm run test:integration
-```
-
----
-
-# Complete API Endpoints
-
----
-
-## Auth
-
-| Method | Endpoint         | Description           |
-| ------ | ---------------- | --------------------- |
-| POST   | `/auth/register` | Register a new user   |
-| POST   | `/auth/login`    | Login and receive JWT |
-
----
-
-## Users (ADMIN only)
-
-| Method | Endpoint             | Description        |
-| ------ | -------------------- | ------------------ |
-| POST   | `/users`             | Create user        |
-| GET    | `/users`             | List users         |
-| GET    | `/users/{id}`        | Get user by ID     |
-| PUT    | `/users/{id}`        | Update user        |
-| DELETE | `/users/{id}`        | Soft delete user   |
-| PATCH  | `/users/{id}/status` | Update user status |
-
----
-
-## Records
-
-| Method | Endpoint        | Roles          | Description   |
-| ------ | --------------- | -------------- | ------------- |
-| POST   | `/records`      | ADMIN          | Create record |
-| GET    | `/records`      | ANALYST, ADMIN | List records  |
-| GET    | `/records/{id}` | ANALYST, ADMIN | Get record    |
-| PUT    | `/records/{id}` | ADMIN          | Update record |
-| DELETE | `/records/{id}` | ADMIN          | Soft delete   |
-
----
-
-## Dashboard
-
-| Method | Endpoint                        | Roles | Description       |
-| ------ | ------------------------------- | ----- | ----------------- |
-| GET    | `/dashboard/summary`            | ALL   | Financial summary |
-| GET    | `/dashboard/category-breakdown` | ALL   | Category stats    |
-| GET    | `/dashboard/monthly-trends`     | ALL   | Monthly trends    |
-| GET    | `/dashboard/recent-activity`    | ALL   | Recent records    |
-
----
-
-## Audit Logs (ADMIN only)
-
-| Method | Endpoint      | Description                  |
-| ------ | ------------- | ---------------------------- |
-| GET    | `/audit-logs` | List audit logs with filters |
-
----
-
-## Schemas
-
-### Success Response
-
-```json
-{
-  "success": true,
-  "data": {},
-  "meta": {}
-}
-```
-
----
-
-### Error Response
-
-```json
-{
-  "success": false,
-  "error": {
-    "code": "ERROR_CODE",
-    "message": "Error message"
-  }
-}
-```
-
----
-
-## 📌 Features
-
-* 1. JWT Authentication
-* 2. RBAC Authorization
-* 3. Zod Validation
-* 4. Swagger Docs
-* 5. Rate Limiting
-* 6. Soft Delete
-* 7. Audit Logging
-* 8. Dashboard Analytics
-* 9. Pagination + Filtering
-
----
-
-## Docker
-
-```
-docker-compose up --build
-```
+* Soft delete is used to preserve historical data
+* JWT is used for stateless authentication
+* ZOD validations follow basic input validation
+* Role-based access is enforced using middleware
+* Prisma ORM ensures type safety and database abstraction
+* Dashboard endpoints use aggregation queries for efficiency
+* Audit logs are recorded asynchronously
+* Pagination + Filtering help optimise UX
+* Rate Limiting avoids attacks
 
 ---
 
 ## Notes
 
-* Swagger only in development
-* PostgreSQL required
-* JWT secret ≥ 32 chars
+* Swagger documentation is available only in development mode
+* PostgreSQL must be running before starting the server
+* JWT secret must be at least 32 characters long
+* Docker setup includes both API and database services
 
 ---
 
